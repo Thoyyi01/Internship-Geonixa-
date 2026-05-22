@@ -23,6 +23,11 @@ app.get('/', (req, res) => {
   res.json({ message: 'Finance Assistant API Running' });
 });
 
+app.use(cors({
+  origin: '*',
+  credentials: true
+}));
+
 // Start Server
 app.listen(process.env.PORT || 3001, () => {
   console.log(`Server running on port ${process.env.PORT || 3001}`);
