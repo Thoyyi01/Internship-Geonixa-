@@ -21,17 +21,38 @@ function Login() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post(`${BASE_URL}/api/auth/login`, form);
-      localStorage.setItem('userId', res.data.userId);
-      localStorage.setItem('userName', res.data.name || '');
-      navigate('/dashboard');
-    } catch (error) {
-      setMessage(error.response?.data?.message || 'Login failed');
-    }
-  };
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  console.log("BASE_URL:", BASE_URL);
+  console.log("FORM DATA:", form);
+
+  try {
+    const res = await axios.post(
+      `${BASE_URL}/api/auth/login`,
+      form
+    );
+
+    console.log("LOGIN RESPONSE:", res.data);
+
+    localStorage.setItem('userId', res.data.userId);
+    localStorage.setItem('userName', res.data.name || '');
+
+    navigate('/dashboard');
+
+  } catch (error) {
+
+    console.log("LOGIN ERROR:", error);
+    console.log("ERROR RESPONSE:", error.response);
+
+    setMessage(
+      error.response?.data?.message ||
+      error.response?.data?.error ||
+      error.message ||
+      'Login failed'
+    );
+  }
+};
 
   return (
     <div style={styles.container}>

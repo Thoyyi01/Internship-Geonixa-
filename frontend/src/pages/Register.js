@@ -21,16 +21,41 @@ function Register() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async () => {
-    try {
-      localStorage.clear();
-      const res = await axios.post(`${BASE_URL}/api/auth/register`, form);
-      setMessage(res.data.message);
-      setTimeout(() => navigate('/'), 1500);
-    } catch (error) {
-      setMessage(error.response?.data?.message || 'Registration failed');
-    }
-  };
+ const handleSubmit = async (e) => {
+
+  e.preventDefault();
+
+  console.log("BASE_URL:", BASE_URL);
+  console.log("REGISTER FORM:", form);
+
+  try {
+
+    localStorage.clear();
+
+    const res = await axios.post(
+      `${BASE_URL}/api/auth/register`,
+      form
+    );
+
+    console.log("REGISTER RESPONSE:", res.data);
+
+    setMessage(res.data.message);
+
+    setTimeout(() => navigate('/'), 1500);
+
+  } catch (error) {
+
+    console.log("REGISTER ERROR:", error);
+    console.log("ERROR RESPONSE:", error.response);
+
+    setMessage(
+      error.response?.data?.message ||
+      error.response?.data?.error ||
+      error.message ||
+      'Registration failed'
+    );
+  }
+};
 
   return (
     <div style={styles.container}>
